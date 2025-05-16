@@ -53,7 +53,7 @@ public class CharacterMovement : MonoBehaviour
             if (Input.GetButtonDown("Jump"))
             {
                 verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-                animator.SetTrigger("Jump");
+
             }
         }
         else
