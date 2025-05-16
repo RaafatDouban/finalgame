@@ -94,7 +94,8 @@ public class CharacterMovement : MonoBehaviour
         {
             speedValue *= 2f;
         }
-        animator.SetFloat("Speed", speedValue);
+        Debug.Log("Blend value: " + speedValue);
+        animator.SetFloat("Blend", speedValue);
     }
 
     private bool IsSprinting()
@@ -134,6 +135,12 @@ public class CharacterMovement : MonoBehaviour
         if (attackCollider != null)
         {
             attackCollider.enabled = false;
+        }
+
+        // Reset the attack trigger to allow retriggering
+        if (animator != null)
+        {
+            animator.ResetTrigger("Attack");
         }
     }
 

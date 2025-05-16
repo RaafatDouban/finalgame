@@ -6,8 +6,9 @@ public class CharacterStats : MonoBehaviour
     [SerializeField] private int maxHealth = 100; // Maximum health
     [SerializeField] private int killscore = 200;
     [SerializeField] public float power = 10f;
+    [SerializeField] private int currentHealth; // This will show in Inspector
 
-    public int currentHealth { get; private set; }
+    public int CurrentHealth => currentHealth;
     private Animator animator;
 
     [SerializeField] private HealthBar healthBar; // Reference to the HealthBar
