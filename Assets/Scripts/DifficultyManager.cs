@@ -27,4 +27,20 @@ public class DifficultyManager : MonoBehaviour
         CurrentDifficulty = difficulty;
         Debug.Log("Difficulty set to: " + difficulty);
     }
+
+    public static void EnsureExists()
+    {
+        if (Instance == null)
+        {
+            GameObject prefab = Resources.Load<GameObject>("DifficultyManager");
+            if (prefab != null)
+            {
+                Instantiate(prefab);
+            }
+            else
+            {
+                Debug.LogError("DifficultyManager prefab not found in Resources!");
+            }
+        }
+    }
 }

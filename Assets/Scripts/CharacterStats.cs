@@ -15,6 +15,7 @@ public class CharacterStats : MonoBehaviour
 
     void Start()
     {
+        DifficultyManager.EnsureExists();
         // Set stats based on difficulty if this is the player
         if (gameObject.CompareTag("Player"))
         {
@@ -29,13 +30,12 @@ public class CharacterStats : MonoBehaviour
                     power = 10f;
                     break;
                 case Difficulty.Hard:
-                    maxHealth = 70;
+                    maxHealth = 90;
                     power = 7f;
                     break;
             }
         }
         currentHealth = maxHealth; // Initialize health
-        LevelManager.Instance.score += killscore;
         animator = GetComponentInChildren<Animator>(); // Get the Animator component
 
         // Initialize the HealthBar
@@ -88,13 +88,28 @@ public class CharacterStats : MonoBehaviour
 
         if (gameObject.CompareTag("Player"))
         {
-            SceneManager.LoadScene(0); // Main menu
+            int currentScene = 0;
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene() != null)
+                currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+            if (currentScene != 0)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            }
         }
         else if (gameObject.CompareTag("Enemy"))
         {
+            if (LevelManager.Instance != null)
+                LevelManager.Instance.score += killscore;
             Destroy(gameObject);
-            yield return null; // Wait one frame so the enemy is actually destroyed
-            EnemyController.CheckAllEnemiesDead();
+            yield return null;
+            // Only call if EnemyController class exists and method is accessible
+            if (System.Type.GetType("EnemyController") != null)
+            {
+                // Use reflection to call static method if it exists
+                var method = System.Type.GetType("EnemyController").GetMethod("CheckAllEnemiesDead");
+                if (method != null)
+                    method.Invoke(null, null);
+            }
         }
         else
         {
